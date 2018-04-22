@@ -7,7 +7,7 @@ namespace SuffixTree
     {
         public Dictionary<char, Edge> Edges { get; set; }
 
-        private Node Link { get; set; }
+        public Node Link { get; set; }
 
         public Node()
         {

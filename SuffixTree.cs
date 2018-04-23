@@ -21,36 +21,47 @@ namespace SuffixTree
             {
                 var currentItem = sequence[i];
                 Remainder++;
+                // oldNode used to keep the Node created in last loop
                 Node oldNode = null;
+                // init this variable to false
                 NeedSuffixLink = false;
                 while (true)
-                {
-                    if (Active_Length == 0)
+                {    
+                    if (Active_Length == 0) // if the active length is 0,it means that we have no maching item from the active node yet
                     {
-                        if (Active_Node.Edges.ContainsKey(currentItem))
-                        {
-                            Active_Edge = currentItem;
+                        if (Active_Node.Edges.ContainsKey(currentItem)) // so if the avtive node has an edge contain current item
+                        {                                               // we do nothing but set the active edge to the current item and active length plus 1
+                            Active_Edge = currentItem;                  // after done this, we break this loop and take next item
                             Active_Length++;
                             break;
                         }
-                        else
+                        else                                            //if not , we need to add an edge to the active node and the key of this edge is current item
                         {
                             Active_Node.Edges.Add(currentItem, new Edge(i, -1));
-                            Remainder--;
-                            if (Remainder == 0)
-                            {
-                                break;
+                            Remainder--;                                // every time we insert an edge we need to decrease the Remainder variable
+                            if (Remainder == 0)                         // if the Remainder is 0, it indicate that we have no suffix sequence wait to insert , so 
+                            {                                           // we just break this loop
+                                break;                   
                             }
                             else
                             {
-                                if (Active_Node == Root)
-                                {
+                                if (Active_Node == Root)                // if not, we need to  judge whether the active node is root
+                                {                                       // if it is the root node ,we need to recover the active length
                                     Active_Length = Remainder - 1;
                                     Active_Edge = sequence[i - Active_Length];
                                 }
                                 else
                                 {
-                                    Active_Node = Active_Node.Link ?? Root;
+                                    if (Active_Node.Link != null)
+                                    {
+                                        Active_Node = Active_Node.Link;
+                                    }
+                                    else
+                                    {
+                                        Active_Node = Root;
+                                        Active_Length = Remainder - 1;
+                                        Active_Edge = sequence[i - Active_Length];
+                                    }
                                 }
                             }
                         }
@@ -100,7 +111,16 @@ namespace SuffixTree
                                 }
                                 else
                                 {
-                                    Active_Node = Active_Node.Link ?? Root;
+                                    if (Active_Node.Link != null)
+                                    {
+                                        Active_Node = Active_Node.Link;
+                                    }
+                                    else
+                                    {
+                                        Active_Node = Root;
+                                        Active_Length = Remainder - 1;
+                                        Active_Edge = sequence[i - Active_Length];
+                                    }
                                 }
                             }
                         }
@@ -109,17 +129,29 @@ namespace SuffixTree
             }
         }
 
-       
+        /// <summary>
+        /// Root node
+        /// </summary>
         public Node Root { get; }
-
+        /// <summary>
+        /// avtive edge is a char date which indicate the active edge of the active node
+        /// </summary>
         private char Active_Edge { get; set; }
-
-        private Node Active_Node { get; set; }
-
+        /// <summary>
+        /// it is a node indicate the active node
+        /// </summary>
+        private Node Active_Node { get; set; } 
+        /// <summary>
+        /// it is indicate how many item it is mathing from the begin of the active edge
+        /// </summary>
         private int Active_Length { get; set; }
-
+        /// <summary>
+        /// it keeps the number of how many suffix sequence remain to insert in the tree
+        /// </summary>
         private int Remainder { get; set; }
-        
+        /// <summary>
+        /// this variable is indicate whether current created node needs to be the suffix link
+        /// </summary>
         private bool NeedSuffixLink { get; set; }
     }
 }

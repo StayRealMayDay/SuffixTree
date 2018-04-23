@@ -48,16 +48,16 @@ namespace SuffixTree
                                 if (Active_Node == Root)                // if not, we need to  judge whether the active node is root
                                 {                                       // if it is the root node ,we need to recover the active length
                                     Active_Length = Remainder - 1;
-                                    Active_Edge = sequence[i - Active_Length];
-                                }
+                                    Active_Edge = sequence[i - Active_Length];// and we use active length to find the active edge , actually i think this if statement is useless ,
+                                }                                       // if the avtive node is root , the active length and active edge must be renewed
                                 else
                                 {
                                     if (Active_Node.Link != null)
                                     {
-                                        Active_Node = Active_Node.Link;
+                                        Active_Node = Active_Node.Link; // if the active node is not root and it has a link node ,we trun to the link node to repeat . do not change the active lenth and the avtive node
                                     }
                                     else
-                                    {
+                                    {                        // if it has no link node ,we turn to the root node ,meanwhile we renew the active length and edge
                                         Active_Node = Root;
                                         Active_Length = Remainder - 1;
                                         Active_Edge = sequence[i - Active_Length];
@@ -67,21 +67,21 @@ namespace SuffixTree
                         }
                     }
                     else
-                    {
-                        if (Active_Length >= Active_Node.Edges[Active_Edge].GetLength())
+                    {                                           // if the length is not 0; we need to find the maching item from the begining of the active edge
+                        if (Active_Length >= Active_Node.Edges[Active_Edge].GetLength()) // if true it means that we need to change the active node and renew the length and edge
                         {
                             Active_Length -= Active_Node.Edges[Active_Edge].GetLength();
                             Active_Node = Active_Node.Edges[Active_Edge].Next;
                             Active_Edge = Active_Length == 0 ? '\0' : sequence[i - Active_Length];
                         }
-                        else
+                        else                                     // after we find the maching items then we need to judge the current item is the same with the item in the tree
                         {
-                            if (sequence[Active_Node.Edges[Active_Edge].From + Active_Length] == currentItem)
+                            if (sequence[Active_Node.Edges[Active_Edge].From + Active_Length] == currentItem) //if they are the same we just increase the length and break the loop 
                             {
                                 Active_Length++;
                                 break;
                             }
-                            else
+                            else        // if not we need to create a new node to insert to the current edge and turn the edge into two edges
                             {
                                 Node addNode = new Node();
                                 addNode.Edges.Add(sequence[Active_Node.Edges[Active_Edge].From + Active_Length],
@@ -92,19 +92,19 @@ namespace SuffixTree
                                     Active_Node.Edges[Active_Edge].Next;
                                 Active_Node.Edges[Active_Edge].Next = addNode;
                                 Active_Node.Edges[Active_Edge].To = Active_Node.Edges[Active_Edge].From + Active_Length;
-                                Remainder--;
-                                if (NeedSuffixLink)
+                                Remainder--;      // after we finish this  we need to decrease the Remainder
+                                if (NeedSuffixLink) // juder whether this node is a suffix link
                                 {
                                     if (oldNode == null) continue;
                                     oldNode.Link = addNode;
                                     oldNode = addNode;
                                 }
-                                else
+                                else   // if not we need to change the value of the NeedSuffixLink variable and store the addNode to the oldNode
                                 {
                                     NeedSuffixLink = true;
                                     oldNode = addNode;
                                 }
-                                if (Active_Node == Root)
+                                if (Active_Node == Root) // the same with before
                                 {
                                     Active_Length = Remainder - 1;
                                     Active_Edge = sequence[i - Active_Length];

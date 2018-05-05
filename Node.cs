@@ -21,7 +21,14 @@ namespace SuffixTree
         public Node()
         {
             Edges = new Dictionary<char, Edge>();
+            SupportDic = new Dictionary<char, int>();
         }
-        
+
+        /// <summary>
+        /// store the support of each edge
+        /// </summary>
+        public Dictionary<char, int> SupportDic { get; set; }
+
+
     }
 }

@@ -22,12 +22,18 @@ namespace SuffixTree
         {
             Edges = new Dictionary<char, Edge>();
             SupportDic = new Dictionary<char, int>();
+            ProbabilityDic = new Dictionary<char, double>();
         }
 
         /// <summary>
         /// store the support of each edge
         /// </summary>
         public Dictionary<char, int> SupportDic { get; set; }
+
+        /// <summary>
+        /// store the probability of each next item
+        /// </summary>
+        public Dictionary<char, double> ProbabilityDic { get; set; }
 
         /// <summary>
         /// store the support of this node
@@ -64,6 +70,10 @@ namespace SuffixTree
                     support += temp;
                 }
 
+                foreach (var keyValue in node.SupportDic)
+                {
+                    node.ProbabilityDic.Add(keyValue.Key, keyValue.Value / (double)support);
+                }
                 node.Support = support;
                 return support;
             }

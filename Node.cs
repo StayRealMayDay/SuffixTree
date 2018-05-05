@@ -34,5 +34,32 @@ namespace SuffixTree
         /// </summary>
         public int Support { get; set; }
 
+
+        public void Refresh()
+        {
+            GetSupport(this);
+        }
+
+        private int GetSupport(Node node)
+        {
+            var support = 0;
+            if (node == null)
+            {
+                return 1;
+            }
+            else
+            {
+                foreach (var keyValue in node.Edges)
+                {
+                    var temp = GetSupport(keyValue.Value.Next);
+                    node.SupportDic.Add(keyValue.Key, temp);
+                    support += temp;
+                }
+
+                node.Support = support;
+                return support;
+            }
+        }
+
     }
 }

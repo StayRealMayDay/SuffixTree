@@ -183,7 +183,15 @@ namespace SuffixTree
                 foreach (var item in node.Edges)
                 {
 //                    Console.WriteLine(gap + item.Key + "(" + item.Value.From + "," + item.Value.To + ")");
-                    Console.WriteLine(gap + TransformSequenceToString(item.Value.From, item.Value.To, data));
+                    Console.Write(gap + TransformSequenceToString(item.Value.From, item.Value.To, data));
+                    if (item.Value.Next != null)
+                    {
+                        Console.WriteLine("(" + item.Value.Next.Support + ")");
+                    }
+                    else
+                    {
+                        Console.WriteLine();
+                    }
                     Display(item.Value.Next, Gap(item.Value.GetLength()) + gap, data);
                 }
             }
@@ -191,29 +199,30 @@ namespace SuffixTree
 
         public void PrintTree(List<char> data)
         {
+            Root.Refresh();
             Display(Root, "--", data);
         }
 
-        public int GetSupport(Node node)
-        {
-            var support = 0;
-            if (node == null)
-            {
-                return 1;
-            }
-            else
-            {
-                foreach (var keyValue in node.Edges)
-                {
-                    var temp = GetSupport(keyValue.Value.Next);
-                    node.SupportDic.Add(keyValue.Key, temp);
-                    support += temp;
-                }
-
-                node.Support = support;
-                return support;
-            }
-        }
+//        public int GetSupport(Node node)
+//        {
+//            var support = 0;
+//            if (node == null)
+//            {
+//                return 1;
+//            }
+//            else
+//            {
+//                foreach (var keyValue in node.Edges)
+//                {
+//                    var temp = GetSupport(keyValue.Value.Next);
+//                    node.SupportDic.Add(keyValue.Key, temp);
+//                    support += temp;
+//                }
+//
+//                node.Support = support;
+//                return support;
+//            }
+//        }
 
         /// <summary>
         /// Root node

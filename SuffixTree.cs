@@ -144,13 +144,20 @@ namespace SuffixTree
             }
         }
 
+        /// <summary>
+        /// get the gap of each sequence
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
         private string Gap(int length)
         {
+            //if length == MaxValue it means that this sequence has no branch,
+            // so this edge.Next is null
             if (length == int.MaxValue)
             {
                 return "-";
             }
-
+            //calculate the gap depende on the sequence length
             var a = "";
             for (int i = 0; i < length; i++)
             {
@@ -159,9 +166,19 @@ namespace SuffixTree
 
             return a;
         }
-
+        
+        /// <summary>
+        /// this function turn the sequence to a string
+        /// you need provide start position , stop position and
+        /// the list of data ,
+        /// </summary>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
         private string TransformSequenceToString(int from, int to, List<char> data)
         {
+            // is the parameter to is -1 , it means this sequence is to the end of the data.
             var a = "";
             if (to == -1)
             {
@@ -176,6 +193,7 @@ namespace SuffixTree
             return a;
         }
 
+        
         private void Display(Node node, string gap, List<char> data)
         {
             if (node != null)
@@ -199,7 +217,7 @@ namespace SuffixTree
 
         public void PrintTree(List<char> data)
         {
-            Root.Refresh();
+            Root.CalculateSupport();
             Display(Root, "--", data);
         }
 

@@ -35,7 +35,7 @@ namespace SuffixTree
         public int Support { get; set; }
 
 
-        public void Refresh()
+        public void CalculateSupport()
         {
             GetSupport(this);
         }

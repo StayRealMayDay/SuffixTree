@@ -29,6 +29,7 @@ namespace SuffixTree
         /// </summary>
         public Dictionary<char, int> SupportDic { get; set; }
 
+        public int Support { get; set; }
 
     }
 }

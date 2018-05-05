@@ -210,6 +210,7 @@ namespace SuffixTree
                     support += temp;
                 }
 
+                node.Support = support;
                 return support;
             }
         }

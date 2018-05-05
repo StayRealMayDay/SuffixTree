@@ -34,12 +34,20 @@ namespace SuffixTree
         /// </summary>
         public int Support { get; set; }
 
-
+        /// <summary>
+        /// Calculate the Support
+        /// </summary>
         public void CalculateSupport()
         {
             GetSupport(this);
         }
 
+        /// <summary>
+        /// use recusive function to calculate the support of each node
+        /// and store it to the variable Support
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         private int GetSupport(Node node)
         {
             var support = 0;

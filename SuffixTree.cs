@@ -182,7 +182,7 @@ namespace SuffixTree
             var a = "";
             if (to == -1)
             {
-                to = data.Count;
+                to = from + 1;
             }
 
             for (int i = from; i < to; i++)
@@ -201,7 +201,7 @@ namespace SuffixTree
                 foreach (var item in node.Edges)
                 {
 //                    Console.WriteLine(gap + item.Key + "(" + item.Value.From + "," + item.Value.To + ")");
-                    Console.Write(gap + TransformSequenceToString(item.Value.From, item.Value.To, data));
+                    Console.Write(gap + "(" + node.ProbabilityDic[item.Key] + ")" + TransformSequenceToString(item.Value.From, item.Value.To, data));
                     if (item.Value.Next != null)
                     {
                         Console.WriteLine("(" + item.Value.Next.Support + ")");

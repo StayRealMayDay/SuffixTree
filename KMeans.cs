@@ -79,11 +79,22 @@ namespace SuffixTree
 //
 //        private Dictionary<int, List<Tuple<double, double>>> CategoryDic { get; set; }
 
+        /// <summary>
+        /// this function category the data
+        /// we choose the first K data to be the middle point
+        /// the calculate the distance to the the middle point of
+        /// all point in the data and then category
+        /// then renew the middle point till the category not change
+        /// </summary>
+        /// <returns></returns>
         public List<char> KMeansAlg()
         {
+            // init the categoty, the value of the array indicate which category the data in
             Category = new int[Data.Count];
             var categoryChanged = true;
             var kMiddlePoint = new List<Tuple<double, double>>();
+            // choose the first K point to be the middle point
+            // is alse means K categories
             for (int i = 0; i < K; i++)
             {
                 kMiddlePoint.Add(Data[i]);
@@ -93,6 +104,7 @@ namespace SuffixTree
             while (categoryChanged)
             {
                 categoryChanged = false;
+                // calculate the min distance each point to the K middle point 
                 for (int i = 0; i < Data.Count; i++)
                 {
                     var category = 0;
@@ -108,26 +120,27 @@ namespace SuffixTree
                             minDistance = temp;
                         }
                     }
-
+                    //if this point changed its category then we change its value in the array
+                    // and change the value of the variable categoryChanged
                     if (Category[i] != category)
                     {
                         categoryChanged = true;
                         Category[i] = category;
                     }
-
-                    var KCount = new int[K];
-                    var KArray = new Double[K, 2];
-                    for (int j = 0; j < Data.Count; j++)
-                    {
-                        KCount[Category[j]]++;
-                        KArray[Category[j], 0] += Data[j].Item1;
-                        KArray[Category[j], 1] += Data[j].Item2;
-                    }
-
-                    for (int j = 0; j < K; j++)
-                    {
-                        kMiddlePoint[j] = new Tuple<double, double>(KArray[j, 0] / KCount[j], KArray[j, 1] / KCount[j]);
-                    }
+                }
+                // renew the middle point value
+                var KCount = new int[K];
+                var KArray = new Double[K, 2];
+                for (int j = 0; j < Data.Count; j++)
+                {
+                    KCount[Category[j]]++;
+                    KArray[Category[j], 0] += Data[j].Item1;
+                    KArray[Category[j], 1] += Data[j].Item2;
+                }
+                
+                for (int j = 0; j < K; j++)
+                {
+                    kMiddlePoint[j] = new Tuple<double, double>(KArray[j, 0] / KCount[j], KArray[j, 1] / KCount[j]);
                 }
             }
 

@@ -233,6 +233,27 @@ namespace SuffixTree
             }
         }
 
+        public void PrintSuccessRate()
+        {
+            var success = 0;
+            var failed = 0;
+            for (int i = 0; i < CountSuccess.Count; i++)
+            {
+                if (CountSuccess[i])
+                {
+                    success += 1;
+                }
+                else
+                {
+                    failed += 1;
+                }
+            }
+            Console.WriteLine("success rate :" + success);
+            Console.WriteLine("failed rate: " + failed);
+            Console.WriteLine("success rate :" + success / CountSuccess.Count);
+            Console.WriteLine("failed rate: " + failed / CountSuccess.Count);
+        }
+
         /// <summary>
         /// get the gap of each sequence
         /// </summary>

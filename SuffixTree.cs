@@ -173,19 +173,22 @@ namespace SuffixTree
                                 ActiveLength = 0;
                                 ActiveNode = ActiveNode.Edges[ActiveEdge].Next;
                                 ActiveEdge = '\0';
-                                var tempProbability = 0.0;
-                                foreach (var keyValue in ActiveNode.ProbabilityDic)
-                                {
-                                    if (keyValue.Value > tempProbability)
-                                    {
-                                        PredictMode = keyValue.Key;
-                                        tempProbability = keyValue.Value;
-                                    }
-                                }
+//                                var tempProbability = 0.0;
+//                                foreach (var keyValue in ActiveNode.ProbabilityDic)
+//                                {
+//                                    if (keyValue.Value > tempProbability)
+//                                    {
+//                                        PredictMode = keyValue.Key;
+//                                        tempProbability = keyValue.Value;
+//                                    }
+//                                }
                             }
                             else
                             {
-                                PredictMode = sequence[ActiveNode.Edges[ActiveEdge].From + ActiveLength];
+                                if (ActiveNode.Edges[ActiveEdge].From + ActiveLength < sequence.Count)
+                                {
+                                    PredictMode = sequence[ActiveNode.Edges[ActiveEdge].From + ActiveLength];
+                                }
                             }
                         }
 
@@ -193,12 +196,14 @@ namespace SuffixTree
                     }
                 }
 
-                if (PredictMode != '$' && PredictMode == currentItem)
+                if (ActiveLength == 0 && ActiveNode.Edges.ContainsKey(currentItem) || (ActiveLength != 0 && PredictMode == currentItem))
                 {
                     CountSuccess.Add(true);
+                    
                 }
                 else
                 {
+                    CountSuccess.Add(false);
                     ActiveNode = Root;
                     ActiveEdge = '\0';
                     ActiveLength = 0;
@@ -217,19 +222,13 @@ namespace SuffixTree
                     ActiveLength = 0;
                     ActiveNode = ActiveNode.Edges[ActiveEdge].Next;
                     ActiveEdge = '\0';
-                    var tempProbability = 0.0;
-                    foreach (var keyValue in ActiveNode.ProbabilityDic)
-                    {
-                        if (keyValue.Value > tempProbability)
-                        {
-                            PredictMode = keyValue.Key;
-                            tempProbability = keyValue.Value;
-                        }
-                    }
                 }
                 else
                 {
-                    PredictMode = sequence[ActiveNode.Edges[ActiveEdge].From + ActiveLength];
+                    if (ActiveNode.Edges[ActiveEdge].From + ActiveLength < sequence.Count)
+                    {
+                        PredictMode = sequence[ActiveNode.Edges[ActiveEdge].From + ActiveLength];
+                    }
                 }
             }
         }
@@ -310,7 +309,7 @@ namespace SuffixTree
 
         public void PrintTree(List<char> data)
         {
-            Root.CalculateSupport();
+            //           Root.CalculateSupport();
             Display(Root, "--", data);
         }
 

@@ -148,6 +148,10 @@ namespace SuffixTree
 
         public void CountSucce(List<char> sequence)
         {
+            ActiveNode = Root;
+            ActiveEdge = '\0';
+            ActiveLength = 0;
+            PredictMode = '$';
             for (int i = 0; i < sequence.Count; i++)
             {
                 var currentItem = sequence[i];
@@ -206,7 +210,8 @@ namespace SuffixTree
                 {
                     ActiveEdge = currentItem;
                 }
-                    ActiveLength++;
+
+                ActiveLength++;
                 if (ActiveLength == ActiveNode.Edges[ActiveEdge].GetLength())
                 {
                     ActiveLength = 0;
